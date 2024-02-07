@@ -10,6 +10,7 @@ type Data = {
 }
 
 function findMinAndMaxTurnover(data: Array<Data>): { min: string, max: string } {
+
   let minTurnover = Infinity
   let dayMin = 0
   let maxTurnover = 0
@@ -33,6 +34,7 @@ function findMinAndMaxTurnover(data: Array<Data>): { min: string, max: string } 
 }
 
 function turnoverHigherThanAverage(data: Array<Data>): string {
+
   let totalTurnhover = 0
   let daysOfWork = 0
   let result: Array<string> = []
@@ -56,7 +58,8 @@ function turnoverHigherThanAverage(data: Array<Data>): string {
     return 'Não há dias com faturamento superior à média.'
   }
 
-  return `Tivemos ${result.length} dias onde o faturamento foi superior à média. Foram eles:\n${result.join('\n')}`
+  return `Tivemos ${result.length} dias onde o faturamento foi superior à média.
+Foram eles:\n${result.join('\n')}`
 }
 
 const data = leitura() as Array<Data>

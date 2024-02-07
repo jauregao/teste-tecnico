@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 
 const leitura = (): unknown => {
-  return JSON.parse(fs.readFileSync('./faturamento.json', 'utf8'));
+  return JSON.parse(fs.readFileSync('./faturamento.json', 'utf8'))
 }
 
 type Data = {
@@ -21,10 +21,14 @@ function calculatePercentage(): Array<Object> {
 
   for (let item of data) {
     const percentual = ((item.faturamento / totalTurnhover) * 100).toFixed(2);
-    percentageList.push({ estado: item.estado, faturamento: `R$ ${item.faturamento}`, percentual: `${percentual}%` });
+    percentageList.push({
+      estado: item.estado,
+      faturamento: `R$ ${item.faturamento}`,
+      percentual: `${percentual}%`
+    })
   }
 
-  return percentageList;
+  return percentageList
 }
 
 console.log(calculatePercentage())
