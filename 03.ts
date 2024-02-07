@@ -1,7 +1,7 @@
-import * as fs from 'fs';
+import * as fs from 'fs'
 
 const leitura = (): unknown => {
-  return JSON.parse(fs.readFileSync('./dados.json', 'utf8'));
+  return JSON.parse(fs.readFileSync('./dados.json', 'utf8'))
 }
 
 type Data = {
@@ -9,51 +9,33 @@ type Data = {
   valor: number
 }
 
-function findMinTurnover(): string {
-
-  const data = leitura() as Array<Data>
-
+function findMinAndMaxTurnover(data: Array<Data>): { min: string, max: string } {
   let minTurnover = Infinity
-  let dayMin = Infinity
-
-  for (let item of data) {
-    if (item.valor < minTurnover) {
-      if (item.valor > 0) {
-        minTurnover = item.valor;
-        dayMin = item.dia
-      }
-    }
-  }
-
-  return `O menor valor de faturamento foi de ${minTurnover} no dia ${dayMin}.`
-}
-
-
-function findMaxTurnover(): string {
-
-  const data = leitura() as Array<Data>
-
+  let dayMin = 0
   let maxTurnover = 0
   let dayMax = 0
 
   for (let item of data) {
+    if (item.valor < minTurnover && item.valor > 0) {
+      minTurnover = item.valor
+      dayMin = item.dia
+    }
     if (item.valor > maxTurnover) {
       maxTurnover = item.valor
       dayMax = item.dia
     }
   }
 
-  return `O maior valor de faturamento foi de ${maxTurnover} no dia ${dayMax}.`
+  return {
+    min: `O menor valor de faturamento foi de R$ ${minTurnover.toFixed(2).replace(".", ",")} no dia ${dayMin}.`,
+    max: `O maior valor de faturamento foi de R$ ${maxTurnover.toFixed(2).replace(".", ",")} no dia ${dayMax}.`
+  }
 }
 
-function turnoverHigherThanAverage(): string {
-
-  const data = leitura() as Array<Data>
-
+function turnoverHigherThanAverage(data: Array<Data>): string {
   let totalTurnhover = 0
   let daysOfWork = 0
   let result: Array<string> = []
-  let daysWithHigherTurnover = 0
 
   for (let item of data) {
     if (item.valor !== 0) {
@@ -67,19 +49,18 @@ function turnoverHigherThanAverage(): string {
   for (let item of data) {
     if (item.valor > averageTurnover && item.valor != 0) {
       result.push(`${item.dia}: R$ ${item.valor.toFixed(2).replace(".", ",")}`)
-      daysWithHigherTurnover++
     }
   }
 
   if (result.length === 0) {
-    return 'Não há dias com faturamento superior ao média.'
+    return 'Não há dias com faturamento superior à média.'
   }
 
-  return `Tivemos ${daysWithHigherTurnover} dias onde o faturamento foi superior a média.
-Foram eles:\n${result.join('\n')}`
+  return `Tivemos ${result.length} dias onde o faturamento foi superior à média. Foram eles:\n${result.join('\n')}`
 }
 
-console.log(findMinTurnover())
-console.log(findMaxTurnover())
-console.log(turnoverHigherThanAverage())
-
+const data = leitura() as Array<Data>
+const { min, max } = findMinAndMaxTurnover(data)
+console.log(min)
+console.log(max)
+console.log(turnoverHigherThanAverage(data))
