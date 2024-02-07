@@ -12,20 +12,19 @@ type Data = {
 function calculatePercentage(): Array<Object> {
 
   const data = leitura() as Array<Data>
-  let percentageList: Array<Object> = []
-
   let totalTurnhover = 0
 
   for (let item of data) {
     totalTurnhover += item.faturamento
   }
+  const percentageList: Array<Object> = [];
 
   for (let item of data) {
-    const percentage = ((item.faturamento / totalTurnhover) * 100).toFixed(2)
-    percentageList.push({ estado: item.estado, faturamento: "R$ " + item.faturamento.toString(), percentual: percentage + "%" })
+    const percentual = ((item.faturamento / totalTurnhover) * 100).toFixed(2);
+    percentageList.push({ estado: item.estado, faturamento: `R$ ${item.faturamento}`, percentual: `${percentual}%` });
   }
 
-  return percentageList
+  return percentageList;
 }
 
 console.log(calculatePercentage())
